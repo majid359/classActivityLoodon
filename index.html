@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Work</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <h1>NGU</h1>
+        <p>Inventory Management System</p>
+        <div class="header">
+            <div class="search-container">
+                <i class="fas fa-search" id="search-icon"></i>
+                <input type="text" id="search-input" placeholder="Search...">
+            </div>
+        </div>
+        <div class="input">
+            <div class="form-group">
+                <input type="text" id="title" placeholder="Title" class="long-input">
+            </div>
+            <div class="form-group" id="frm">
+                <input type="text" id="price" placeholder="Price">
+                <input type="text" id="discount" placeholder="Discount">
+                <div class="total-container">
+                    <p>Total:</p>
+                    <span id="total-value">0</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="text" id="count" placeholder="Count" class="long-input">
+            </div>
+            <div class="form-group">
+                <input type="text" id="category" placeholder="Category" class="long-input">
+            </div>
+            <div class="form-group">
+                <button type="button" class="long-button" id="create-button">Create</button>
+            </div>
+        </div>
+        <div class="output">
+            <div class="s-form-group">
+                <input type="text" placeholder="Search..." class="long-input">
+                <div class="search-buttons">
+                    <button class="left-button">Search By Title</button>
+                    <button class="right-button">Search By Category</button>
+                </div>
+            </div>
+            <table id="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Discount</th>
+                        <th>Total</th>
+                        <th>Category</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <td>
+                    <td>Samsung</td>
+                    <td>1200</td>
+                    <td>200</td>
+                    <td>1000</td>
+                    <td>Phone</td>
+                    <td><button>Update</button></td>
+                    <td><button>Delete</button></td>
+                  </td>
+                </tbody>
+            </table>
+        </div>
+        <footer>
+          <p>@Submitted By Abdimajiid Ahmed Ali</p>
+        </footer>
+    </main>
+    <script>
+        const priceInput = document.getElementById('price');
+        const discountInput = document.getElementById('discount');
+        const countInput = document.getElementById('count');
+        const totalValue = document.getElementById('total-value');
+        const createButton = document.getElementById('create-button');
+        const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+
+        let idCounter = 1;
+
+        function calculateTotal() {
+            const price = parseFloat(priceInput.value) || 0;
+            const discount = parseFloat(discountInput.value) || 0;
+            const count = parseFloat(countInput.value) || 0;
+            totalValue.textContent = (price * count) - discount;
+        }
+
+        priceInput.addEventListener('input', calculateTotal);
+        discountInput.addEventListener('input', calculateTotal);
+        countInput.addEventListener('input', calculateTotal);
+
+        document.getElementById('search-icon').addEventListener('click', function () {
+            const searchInput = document.getElementById('search-input');
+            searchInput.classList.toggle('expand');
+        });
+
+        createButton.addEventListener('click', function () {
+            let title = document.getElementById('title').value;
+            let price = parseFloat(document.getElementById('price').value) || 0;
+            let discount = parseFloat(document.getElementById('discount').value) || 0;
+            let count = parseFloat(document.getElementById('count').value) || 0;
+            let category = document.getElementById('category').value;
+            let total = (price * count) - discount;
+
+            const newRow = dataTable.insertRow();
+            newRow.insertCell(0).textContent = idCounter++;
+            newRow.insertCell(1).textContent = title;
+            newRow.insertCell(2).textContent = price;
+            newRow.insertCell(3).textContent = discount;
+            newRow.insertCell(4).textContent = total;
+            newRow.insertCell(5).textContent = category;
+            newRow.insertCell(6).innerHTML = '<button>Update</button>';
+            newRow.insertCell(7).innerHTML = '<button>Delete</button>';
+
+            // Clear the input fields
+            // document.getElementById('title').value = '';
+            // document.getElementById('price').value = '';
+            // document.getElementById('discount').value = '';
+            // document.getElementById('count').value = '';
+            // document.getElementById('category').value = '';
+            // totalValue.textContent = '0';
+        });
+    </script>
+</body>
+</html>

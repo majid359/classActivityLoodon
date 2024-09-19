@@ -1,0 +1,267 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #1a2b48;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.proj-title{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+h1 {
+  margin: 0;
+}
+
+.search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+#search-icon {
+  cursor: pointer;
+  font-size: 20px;
+}
+
+#search-input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: white;
+  border-bottom: 1px solid white;
+  width: 0;
+  transition: width 0.5s;
+  padding: 5px;
+}
+
+#search-input.expand {
+  width: 200px;
+}
+
+.input, .output {
+  margin: 20px 0;
+}
+
+.form-group {
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+}
+.s-form-group{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.s-form-group input{
+  width: 100px;
+}
+.s-form-group .search-buttons{
+  display: flex;
+  align-items: center;
+  gap: 200px;
+  margin-top: 10px;
+}
+
+input[type="text"] {
+  padding: 10px;
+  border: none;
+  outline: none;
+  background-color: #b01d1d;
+  color: white;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+input.long-input {
+  flex: 1;
+  width: 98%;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #1aa96e;
+  color: white;
+  cursor: pointer;
+  border-radius: 20px;
+  width: 100%;
+}
+
+.total-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 10px;
+}
+
+.left-button {
+  margin-right: auto;
+}
+
+.right-button {
+  margin-left: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #1aa96e;
+}
+
+tr:nth-child(even) {
+  background-color: #1a2b48;
+}
+
+tr:hover {
+  background-color: #575757;
+}
+
+@media (max-width: 768px) {
+  .header {
+      align-items: flex-start;
+  }
+
+  .form-group {
+      flex-direction: column;
+  }
+
+  #search-input.expand {
+      width: 100%;
+  }
+}
+@media (max-width: 844px) {
+  .header {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+  #frm{
+    flex-direction: row;
+  }
+  #frm input{
+    width:100px;
+  }
+  .s-form-group{
+    width: 95%;
+  }
+  .s-form-group .search-buttons{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 0.5px;
+    justify-content: center;
+    margin-left: 5px;
+  }
+  .left-button{
+    margin-right: 0;
+  }
+  .right-button{
+    margin: 0;
+    padding: 10px;
+  }
+
+  .form-group {
+      flex-direction: column;
+  }
+
+  #search-input.expand {
+      width: 100%;
+  }
+  table {
+    width: 80%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 8px;
+    padding: 1px;
+    gap: 0;
+  }
+  table tbody td button{
+    width: 10px;
+    height: 10px;
+    font-size: 10px;
+  }
+}
+@media (max-width: 932px) {
+  .header {
+      flex-direction: column;
+      align-items: flex-start;
+  }
+  #frm{
+    flex-direction: row;
+  }
+  #frm input{
+    width:100px;
+  }
+  .s-form-group{
+    width: 95%;
+  }
+  .s-form-group .search-buttons{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 0.5px;
+    justify-content: center;
+    margin-left: 5px;
+  }
+  .left-button{
+    margin-right: 0;
+  }
+  .right-button{
+    margin: 0;
+    padding: 10px;
+  }
+
+  .form-group {
+      flex-direction: column;
+  }
+
+  #search-input.expand {
+      width: 100%;
+  }
+  table {
+    width: 80%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 8px;
+    padding: 1px;
+    gap: 0;
+  }
+  table tbody td button{
+    width: 10px;
+    height: 10px;
+    font-size: 10px;
+  }
+}
+footer{
+  margin-top: 25%;
+}
+
