@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Class Work</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <main class="container">
@@ -24,7 +25,7 @@
                 <input type="text" id="price" placeholder="Price">
                 <input type="text" id="discount" placeholder="Discount">
                 <div class="total-container">
-                    <p>Total:</p>
+                    <p style="background-color: green; padding: 5px; border-radius: 5px;">Total:</p>
                     <span id="total-value">0</span>
                 </div>
             </div>
@@ -36,14 +37,15 @@
             </div>
             <div class="form-group">
                 <button type="button" class="long-button" id="create-button">Create</button>
+                <button type="button" class="long-button" id="update-button" style="display: none;">Update</button>
             </div>
         </div>
         <div class="output">
             <div class="s-form-group">
-                <input type="text" placeholder="Search..." class="long-input">
+                <input type="text" id="search-field" placeholder="Search..." class="long-input">
                 <div class="search-buttons">
-                    <button class="left-button">Search By Title</button>
-                    <button class="right-button">Search By Category</button>
+                    <button class="left-button" id="search-by-title">Search By Title</button>
+                    <button class="right-button" id="search-by-category">Search By Category</button>
                 </div>
             </div>
             <table id="data-table">
@@ -60,15 +62,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                  <td>
-                    <td>Samsung</td>
-                    <td>1200</td>
-                    <td>200</td>
-                    <td>1000</td>
-                    <td>Phone</td>
-                    <td><button>Update</button></td>
-                    <td><button>Delete</button></td>
-                  </td>
                 </tbody>
             </table>
         </div>
@@ -82,9 +75,12 @@
         const countInput = document.getElementById('count');
         const totalValue = document.getElementById('total-value');
         const createButton = document.getElementById('create-button');
+        const updateButton = document.getElementById('update-button');
         const dataTable = document.getElementById('data-table').getElementsByTagName('tbody')[0];
 
         let idCounter = 1;
+        let data = [];
+        let currentEditId = null;
 
         function calculateTotal() {
             const price = parseFloat(priceInput.value) || 0;
@@ -103,30 +99,133 @@
         });
 
         createButton.addEventListener('click', function () {
-            let title = document.getElementById('title').value;
-            let price = parseFloat(document.getElementById('price').value) || 0;
-            let discount = parseFloat(document.getElementById('discount').value) || 0;
-            let count = parseFloat(document.getElementById('count').value) || 0;
-            let category = document.getElementById('category').value;
-            let total = (price * count) - discount;
+            const title = document.getElementById('title').value;
+            const price = parseFloat(document.getElementById('price').value) || 0;
+            const discount = parseFloat(document.getElementById('discount').value) || 0;
+            const count = parseFloat(document.getElementById('count').value) || 0;
+            const category = document.getElementById('category').value;
+            const total = (price * count) - discount;
 
             const newRow = dataTable.insertRow();
-            newRow.insertCell(0).textContent = idCounter++;
+            newRow.insertCell(0).textContent = idCounter;
             newRow.insertCell(1).textContent = title;
             newRow.insertCell(2).textContent = price;
             newRow.insertCell(3).textContent = discount;
             newRow.insertCell(4).textContent = total;
             newRow.insertCell(5).textContent = category;
-            newRow.insertCell(6).innerHTML = '<button>Update</button>';
-            newRow.insertCell(7).innerHTML = '<button>Delete</button>';
+            newRow.insertCell(6).innerHTML = '<button onclick="editRow(this)">Update</button>';
+            newRow.insertCell(7).innerHTML = '<button onclick="deleteRow(this)">Delete</button>';
 
-            // Clear the input fields
-            // document.getElementById('title').value = '';
-            // document.getElementById('price').value = '';
-            // document.getElementById('discount').value = '';
-            // document.getElementById('count').value = '';
-            // document.getElementById('category').value = '';
-            // totalValue.textContent = '0';
+            data.push({
+                id: idCounter++,
+                title: title,
+                price: price,
+                discount: discount,
+                total: total,
+                category: category
+            });
+
+            clearInputFields();
+        });
+
+        function filterTable(filterKey, filterValue) {
+            const filteredData = data.filter(item => item[filterKey].toLowerCase().includes(filterValue.toLowerCase()));
+            dataTable.innerHTML = '';
+            filteredData.forEach(item => {
+                const newRow = dataTable.insertRow();
+                newRow.insertCell(0).textContent = item.id;
+                newRow.insertCell(1).textContent = item.title;
+                newRow.insertCell(2).textContent = item.price;
+                newRow.insertCell(3).textContent = item.discount;
+                newRow.insertCell(4).textContent = item.total;
+                newRow.insertCell(5).textContent = item.category;
+                newRow.insertCell(6).innerHTML = '<button onclick="editRow(this)">Update</button>';
+                newRow.insertCell(7).innerHTML = '<button onclick="deleteRow(this)">Delete</button>';
+            });
+        }
+
+        document.getElementById('search-by-title').addEventListener('click', function () {
+            const searchValue = document.getElementById('search-field').value;
+            filterTable('title', searchValue);
+        });
+
+        document.getElementById('search-by-category').addEventListener('click', function () {
+            const searchValue = document.getElementById('search-field').value;
+            filterTable('category', searchValue);
+        });
+
+        function clearInputFields() {
+            document.getElementById('title').value = '';
+            document.getElementById('price').value = '';
+            document.getElementById('discount').value = '';
+            document.getElementById('count').value = '';
+            document.getElementById('category').value = '';
+            totalValue.textContent = '0';
+        }
+
+        window.editRow = function (button) {
+            const row = button.closest('tr');
+            const cells = row.getElementsByTagName('td');
+            currentEditId = parseInt(cells[0].textContent);
+
+            document.getElementById('title').value = cells[1].textContent;
+            document.getElementById('price').value = cells[2].textContent;
+            document.getElementById('discount').value = cells[3].textContent;
+            document.getElementById('count').value = parseInt(cells[4].textContent) / parseFloat(cells[2].textContent);
+            document.getElementById('category').value = cells[5].textContent;
+
+            calculateTotal();
+
+            createButton.style.display = 'none';
+            updateButton.style.display = 'inline-block';
+        };
+
+        window.deleteRow = function (button) {
+            const row = button.closest('tr');
+            const id = parseInt(row.getElementsByTagName('td')[0].textContent);
+            data = data.filter(item => item.id !== id);
+            dataTable.deleteRow(row.rowIndex - 1);
+        };
+
+        updateButton.addEventListener('click', function () {
+            const title = document.getElementById('title').value;
+            const price = parseFloat(document.getElementById('price').value) || 0;
+            const discount = parseFloat(document.getElementById('discount').value) || 0;
+            const count = parseFloat(document.getElementById('count').value) || 0;
+            const category = document.getElementById('category').value;
+            const total = (price * count) - discount;
+
+            data = data.map(item => {
+                if (item.id === currentEditId) {
+                    return {
+                        id: item.id,
+                        title: title,
+                        price: price,
+                        discount: discount,
+                        total: total,
+                        category: category
+                    };
+                }
+                return item;
+            });
+
+            dataTable.innerHTML = '';
+            data.forEach(item => {
+                const newRow = dataTable.insertRow();
+                newRow.insertCell(0).textContent = item.id;
+                newRow.insertCell(1).textContent = item.title;
+                newRow.insertCell(2).textContent = item.price;
+                newRow.insertCell(3).textContent = item.discount;
+                newRow.insertCell(4).textContent = item.total;
+                newRow.insertCell(5).textContent = item.category;
+                newRow.insertCell(6).innerHTML = '<button onclick="editRow(this)">Update</button>';
+                newRow.insertCell(7).innerHTML = '<button onclick="deleteRow(this)">Delete</button>';
+            });
+
+            clearInputFields();
+            createButton.style.display = 'inline-block';
+            updateButton.style.display = 'none';
+            currentEditId = null;
         });
     </script>
 </body>
